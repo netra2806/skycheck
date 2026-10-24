@@ -1,0 +1,1130 @@
+/* ==========================================================================
+   SKYCHECK - MODERN CARTOON WEATHER CHECKER STYLESHEET
+   Clean static design with vivid cartoon background pictures and glassmorphism.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
+
+/* --------------------------------------------------------------------------
+   Theme Variables & Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Typography */
+  --font-brand: 'Fredoka', cursive, sans-serif;
+  --font-body: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-numbers: 'Outfit', sans-serif;
+
+  /* Universal Transitions */
+  --transition-smooth: 0.25s ease;
+
+  /* Glassmorphism Defaults (Day/Sunny) */
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-bg-subtle: rgba(255, 255, 255, 0.68);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 16px 36px -8px rgba(37, 72, 120, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.7);
+  --card-hover-shadow: 0 20px 40px -6px rgba(37, 72, 120, 0.24);
+  
+  --text-main: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent-color: #ff9800;
+  --accent-glow: rgba(255, 152, 0, 0.35);
+
+  --badge-bg: rgba(255, 255, 255, 0.88);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(255, 255, 255, 0.95);
+  
+  /* Fallback Sky Gradients */
+  --sky-gradient: linear-gradient(180deg, #4facfe 0%, #00f2fe 55%, #a6c1ee 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Weather Theme Dynamic Classes
+   -------------------------------------------------------------------------- */
+body.theme-sunny {
+  --sky-gradient: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 45%, #fed7aa 85%, #fef08a 100%);
+  --text-main: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --card-bg: rgba(255, 255, 255, 0.86);
+  --card-border: rgba(255, 255, 255, 0.92);
+  --card-shadow: 0 16px 38px -6px rgba(14, 116, 144, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  --accent-color: #f59e0b;
+  --accent-glow: rgba(245, 158, 11, 0.4);
+}
+
+body.theme-rainy {
+  --sky-gradient: linear-gradient(180deg, #334155 0%, #475569 40%, #64748b 75%, #94a3b8 100%);
+  --text-main: #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted: #475569;
+  --card-bg: rgba(241, 245, 249, 0.88);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 18px 40px -6px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.7);
+  --accent-color: #0284c7;
+  --accent-glow: rgba(2, 132, 199, 0.4);
+}
+
+body.theme-cloudy {
+  --sky-gradient: linear-gradient(180deg, #64748b 0%, #94a3b8 45%, #cbd5e1 80%, #e2e8f0 100%);
+  --text-main: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --card-bg: rgba(255, 255, 255, 0.86);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 16px 36px -6px rgba(71, 85, 105, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  --accent-color: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.35);
+}
+
+body.theme-thunder {
+  --sky-gradient: linear-gradient(180deg, #090a16 0%, #1e113a 40%, #2e1065 75%, #4c1d95 100%);
+  --text-main: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --card-bg: rgba(26, 21, 48, 0.84);
+  --card-bg-subtle: rgba(46, 36, 82, 0.74);
+  --card-border: rgba(168, 85, 247, 0.35);
+  --card-shadow: 0 18px 42px -6px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(168, 85, 247, 0.25);
+  --card-hover-shadow: 0 22px 46px -4px rgba(147, 51, 234, 0.45);
+  --input-bg: rgba(46, 36, 82, 0.9);
+  --input-border: rgba(168, 85, 247, 0.4);
+  --badge-bg: rgba(88, 28, 135, 0.85);
+  --accent-color: #fbbf24;
+  --accent-glow: rgba(251, 191, 36, 0.5);
+}
+
+body.theme-snowy {
+  --sky-gradient: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 40%, #e0f2fe 80%, #f0f9ff 100%);
+  --text-main: #0c4a6e;
+  --text-secondary: #0369a1;
+  --text-muted: #38bdf8;
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(224, 242, 254, 0.95);
+  --card-shadow: 0 16px 36px -6px rgba(12, 74, 110, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  --accent-color: #0ea5e9;
+  --accent-glow: rgba(14, 165, 233, 0.4);
+}
+
+body.theme-night {
+  --sky-gradient: linear-gradient(180deg, #020617 0%, #0f172a 35%, #1e1b4b 75%, #312e81 100%);
+  --text-main: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --card-bg: rgba(15, 23, 42, 0.85);
+  --card-bg-subtle: rgba(30, 41, 59, 0.75);
+  --card-border: rgba(255, 255, 255, 0.2);
+  --card-shadow: 0 18px 44px -6px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  --card-hover-shadow: 0 22px 46px -4px rgba(99, 102, 241, 0.35);
+  --input-bg: rgba(30, 41, 59, 0.9);
+  --input-border: rgba(255, 255, 255, 0.25);
+  --badge-bg: rgba(30, 41, 59, 0.9);
+  --accent-color: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.45);
+}
+
+body.theme-mist {
+  --sky-gradient: linear-gradient(180deg, #475569 0%, #64748b 45%, #94a3b8 80%, #cbd5e1 100%);
+  --text-main: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --card-bg: rgba(248, 250, 252, 0.88);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 16px 36px -6px rgba(51, 65, 85, 0.22);
+  --accent-color: #14b8a6;
+  --accent-glow: rgba(20, 184, 166, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Styles
+   -------------------------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background: var(--sky-gradient);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------------------
+   Dynamic Background Cartoon Picture Layer
+   -------------------------------------------------------------------------- */
+#bg-picture-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.94;
+  pointer-events: none;
+  z-index: 0;
+  transition: background-image 0.4s ease;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+#bg-picture-layer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.25) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Main Layout Container
+   -------------------------------------------------------------------------- */
+.app-wrapper {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   Header & Controls Navigation (High Stacking Context)
+   -------------------------------------------------------------------------- */
+.app-header {
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 24px;
+  border-radius: 24px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffca28, #ff8f00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35);
+}
+
+.brand-name {
+  font-family: var(--font-brand);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.theme-thunder .brand-name,
+body.theme-night .brand-name {
+  background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-badge {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  -webkit-text-fill-color: initial;
+}
+
+/* --------------------------------------------------------------------------
+   Search Bar & Autocomplete Recommendations (Foreground Z-Index)
+   -------------------------------------------------------------------------- */
+.search-section {
+  position: relative;
+  z-index: 1001;
+  flex: 1;
+  min-width: 280px;
+  max-width: 480px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: 999px;
+  padding: 4px 6px 4px 18px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.search-bar:focus-within {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.search-icon {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  padding: 8px 0;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.search-btn-clear {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn-clear.show {
+  display: flex;
+}
+
+.locate-btn {
+  border: none;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3);
+  transition: background var(--transition-smooth);
+  white-space: nowrap;
+}
+
+.locate-btn:hover {
+  background: linear-gradient(135deg, #0369a1, #075985);
+}
+
+/* Autocomplete Dropdown List - Always in the Absolute Front */
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  background: var(--card-bg);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1.5px solid var(--accent-color);
+  border-radius: 20px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.6);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 999999 !important;
+  display: none;
+  padding: 8px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.autocomplete-dropdown.open {
+  display: flex;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background var(--transition-smooth);
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.active {
+  background: rgba(2, 132, 199, 0.16);
+}
+
+.autocomplete-item .city-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.autocomplete-item .country-name {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Header Tools (Units)
+   -------------------------------------------------------------------------- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill-btn {
+  border: 1px solid var(--card-border);
+  background: var(--badge-bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: background var(--transition-smooth), border-color var(--transition-smooth);
+  user-select: none;
+}
+
+.pill-btn:hover {
+  border-color: var(--accent-color);
+  background: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   PROMINENT RECOMMENDATION BAR FOR AREAS (Brought to the Front)
+   -------------------------------------------------------------------------- */
+.recommended-areas-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 22px;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-radius: 22px;
+  border: 1.5px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.rec-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.rec-chips-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.city-chip {
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid var(--card-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.city-chip:hover {
+  background: #ffffff;
+  color: var(--text-main);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+body.theme-thunder .city-chip,
+body.theme-night .city-chip {
+  background: rgba(46, 36, 82, 0.8);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.theme-thunder .city-chip:hover,
+body.theme-night .city-chip:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   Weather Dashboard Main Grid
+   -------------------------------------------------------------------------- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+}
+
+@media (max-width: 960px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero Current Weather Card
+   -------------------------------------------------------------------------- */
+.hero-weather-card {
+  position: relative;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid var(--card-border);
+  border-radius: 32px;
+  padding: 34px 38px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  overflow: hidden;
+}
+
+.hero-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.location-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.city-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.city-title {
+  font-family: var(--font-brand);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-main);
+}
+
+.country-flag-badge {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.local-time-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.weather-badge-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--font-brand);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--badge-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Hero Center Info */
+.hero-center-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.temp-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-temp-wrap {
+  display: flex;
+  align-items: flex-start;
+}
+
+.current-temp-number {
+  font-family: var(--font-numbers);
+  font-size: 84px;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -3px;
+  color: var(--text-main);
+}
+
+.temp-unit-symbol {
+  font-family: var(--font-numbers);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-top: 4px;
+}
+
+.condition-title {
+  font-family: var(--font-brand);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 6px;
+}
+
+.condition-subtext {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  max-width: 380px;
+  line-height: 1.4;
+}
+
+/* Mascot Container in Hero */
+.mascot-hero-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.mascot-nameplate {
+  font-family: var(--font-brand);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+}
+
+/* Hero Bottom Stats Pill Row */
+.hero-bottom-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--card-border);
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 16px;
+  background: var(--card-bg-subtle);
+  border: 1px solid var(--card-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stat-pill strong {
+  font-family: var(--font-numbers);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   Hourly Forecast Card (Horizontal Scroll)
+   -------------------------------------------------------------------------- */
+.hourly-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 22px 26px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title {
+  font-family: var(--font-brand);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hourly-scroll-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) transparent;
+}
+
+.hourly-scroll-strip::-webkit-scrollbar {
+  height: 6px;
+}
+.hourly-scroll-strip::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 999px;
+}
+
+.hour-item {
+  flex: 0 0 auto;
+  width: 82px;
+  padding: 14px 10px;
+  border-radius: 20px;
+  background: var(--card-bg-subtle);
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background var(--transition-smooth);
+}
+
+.hour-item:hover,
+.hour-item.now {
+  background: var(--badge-bg);
+  border-color: var(--accent-color);
+}
+
+.hour-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.hour-icon {
+  font-size: 26px;
+}
+
+.hour-temp {
+  font-family: var(--font-numbers);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.hour-rain {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Weekly 7-Day Forecast Card
+   -------------------------------------------------------------------------- */
+.weekly-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 24px 28px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.weekly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekly-item {
+  display: grid;
+  grid-template-columns: 110px 40px 1fr 100px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--card-bg-subtle);
+  border: 1px solid var(--card-border);
+  transition: background var(--transition-smooth);
+}
+
+.weekly-item:hover {
+  background: var(--badge-bg);
+}
+
+.weekly-day {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.weekly-day.today {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+.weekly-icon {
+  font-size: 24px;
+  text-align: center;
+}
+
+/* Temperature Range Bar */
+.temp-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.temp-bar-track {
+  flex: 1;
+  height: 7px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+
+body.theme-thunder .temp-bar-track,
+body.theme-night .temp-bar-track {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.temp-bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8 0%, #fbbf24 60%, #ef4444 100%);
+}
+
+.weekly-temps {
+  font-family: var(--font-numbers);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+  color: var(--text-main);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.weekly-temps .low {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Bento Highlights Grid
+   -------------------------------------------------------------------------- */
+.bento-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.bento-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bento-title {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bento-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--badge-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--card-border);
+}
+
+.bento-main-val {
+  font-family: var(--font-numbers);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.bento-subtext {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Specific Bento Visuals */
+.wind-visual-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pinwheel-svg-wrap {
+  width: 52px;
+  height: 52px;
+}
+
+/* Sunrise Sun Path Arch */
+.sunrise-arch-wrap {
+  width: 100%;
+  height: 70px;
+  position: relative;
+  margin-top: 4px;
+}
+
+.sunrise-arch-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sun-times-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* UV Gauge */
+.uv-gauge-wrap {
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(90deg, #22c55e 0%, #eab308 35%, #f97316 65%, #ef4444 85%, #8b5cf6 100%);
+  border-radius: 999px;
+  position: relative;
+  margin: 8px 0;
+}
+
+.uv-gauge-thumb {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border: 3px solid var(--text-main);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Footer & Attribution
+   -------------------------------------------------------------------------- */
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.footer-link {
+  color: var(--text-main);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Notification Toast
+   -------------------------------------------------------------------------- */
+.toast-msg {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-family: var(--font-brand);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.toast-msg.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.loading-state {
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .app-wrapper {
+    padding: 16px 12px 40px 12px;
+    gap: 16px;
+  }
+
+  .app-header {
+    padding: 14px 16px;
+    border-radius: 20px;
+  }
+
+  .search-section {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .hero-weather-card {
+    padding: 24px 20px;
+  }
+
+  .current-temp-number {
+    font-size: 64px;
+  }
+
+  .weekly-item {
+    grid-template-columns: 85px 32px 1fr 80px;
+    font-size: 13px;
+  }
+}

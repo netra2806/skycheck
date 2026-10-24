@@ -1,0 +1,19 @@
+/* ==========================================================================
+   SKYCHECK - STATIC CARTOON MASCOT & CARD STYLES
+   Animations removed as requested by user.
+   ========================================================================== */
+
+.mascot-avatar {
+  width: 105px;
+  height: 105px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.14));
+}
+
+.mascot-avatar svg {
+  width: 100%;
+  height: 100%;
+}

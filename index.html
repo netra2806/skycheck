@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyCheck - Cartoon Weather Checker</title>
+  <meta name="description" content="Check real-time live global weather with vivid cartoon background pictures matching live conditions: rainy puddles with raindrops, bright sunny hills with smiling sun, fluffy cloudy skies, winter snow, and starry nights.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/weather-animations.css">
+</head>
+<body class="theme-sunny">
+
+  <!-- Dynamic Cartoon Background Picture Layer (Automatically matches live weather) -->
+  <div id="bg-picture-layer"></div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-wrapper">
+
+    <!-- Top Navigation & Controls Header (High Z-Index) -->
+    <header class="app-header">
+      <div class="brand-container" id="brand-logo" title="SkyCheck Weather">
+        <div class="brand-icon">🌤️</div>
+        <div class="brand-name">
+          SkyCheck
+          <span class="brand-badge">LIVE API</span>
+        </div>
+      </div>
+
+      <!-- City Search & Autocomplete Recommendations -->
+      <div class="search-section">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="city-search-input" 
+            class="search-input" 
+            placeholder="Search any area, city or country..." 
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search city or area"
+          >
+          <button id="search-clear-btn" class="search-btn-clear" title="Clear input" aria-label="Clear search">✕</button>
+          <button id="btn-locate" class="locate-btn" title="Detect your current location">
+            <span>📍</span> Locate
+          </button>
+        </div>
+        <!-- Autocomplete Recommendation Dropdown (Always in Front) -->
+        <div id="autocomplete-dropdown" class="autocomplete-dropdown" role="listbox"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="header-actions">
+        <button id="btn-toggle-unit" class="pill-btn" title="Toggle Celsius / Fahrenheit">
+          <span>🌡️</span> °C
+        </button>
+      </div>
+    </header>
+
+    <!-- PROMINENT RECOMMENDATION BAR FOR AREAS -->
+    <div class="recommended-areas-bar" id="recommended-areas-container">
+      <div class="rec-label">
+        <span>📍 Recommended Areas:</span>
+      </div>
+      <div class="rec-chips-list">
+        <button class="city-chip" data-city="Tokyo">Tokyo 🇯🇵</button>
+        <button class="city-chip" data-city="New York">New York 🇺🇸</button>
+        <button class="city-chip" data-city="London">London 🇬🇧</button>
+        <button class="city-chip" data-city="Paris">Paris 🇫🇷</button>
+        <button class="city-chip" data-city="Sydney">Sydney 🇦🇺</button>
+        <button class="city-chip" data-city="Mumbai">Mumbai 🇮🇳</button>
+        <button class="city-chip" data-city="Dubai">Dubai 🇦🇪</button>
+        <button class="city-chip" data-city="Singapore">Singapore 🇸🇬</button>
+        <button class="city-chip" data-city="Reykjavik">Reykjavik 🇮🇸</button>
+        <button class="city-chip" data-city="Honolulu">Honolulu 🌺</button>
+      </div>
+    </div>
+
+    <!-- Main Weather Dashboard Grid -->
+    <main class="dashboard-grid">
+
+      <!-- Left Column: Hero Current Weather & Hourly Timeline -->
+      <section style="display:flex; flex-direction:column; gap:24px;">
+        
+        <!-- Hero Weather Card -->
+        <article class="hero-weather-card">
+          <div class="hero-top-row">
+            <div class="location-group">
+              <div class="city-title-wrap">
+                <h1 id="hero-city-name" class="city-title">Tokyo</h1>
+                <span id="hero-country-flag" class="country-flag-badge">🇯🇵</span>
+              </div>
+              <div id="hero-local-time" class="local-time-badge">
+                <span>🕒</span> Live Time
+              </div>
+            </div>
+            <div id="hero-condition-badge" class="weather-badge-pill">
+              ☀️ Clear & Sunny
+            </div>
+          </div>
+
+          <!-- Hero Main Body with Mascot & Temperatures -->
+          <div class="hero-center-row">
+            <div class="temp-group">
+              <div class="current-temp-wrap">
+                <span id="hero-temp-value" class="current-temp-number">22</span>
+                <span id="hero-temp-unit" class="temp-unit-symbol">°C</span>
+              </div>
+              <h2 id="hero-condition-title" class="condition-title">Clear Sky & Sunshine</h2>
+              <p id="hero-condition-desc" class="condition-subtext">
+                Bright golden rays warming the neighborhood!
+              </p>
+            </div>
+
+            <!-- Cartoon Mascot Badge ("SkyBuddy") -->
+            <div class="mascot-hero-stage">
+              <div id="mascot-avatar-slot"></div>
+              <span class="mascot-nameplate">SkyBuddy ✨</span>
+            </div>
+          </div>
+
+          <!-- Bottom Summary Pills -->
+          <div class="hero-bottom-stats">
+            <div class="stat-pill">
+              <span>🌡️ Feels Like</span>
+              <strong id="stat-feels-like">23°C</strong>
+            </div>
+            <div class="stat-pill">
+              <span>📈 High / Low</span>
+              <strong id="stat-high-low">H: 24° / L: 16°</strong>
+            </div>
+            <div class="stat-pill">
+              <span>💨 Wind</span>
+              <strong id="stat-wind-hero">12 km/h NW</strong>
+            </div>
+          </div>
+        </article>
+
+        <!-- 24-Hour Hourly Forecast Carousel -->
+        <article class="hourly-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <span>⏰</span> 24-Hour Hourly Outlook
+            </h3>
+            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">Scroll &gt;</span>
+          </div>
+          <div id="hourly-forecast-strip" class="hourly-scroll-strip">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </article>
+
+      </section>
+
+      <!-- Right Column: 7-Day Forecast & Key Metrics Bento -->
+      <section style="display:flex; flex-direction:column; gap:24px;">
+
+        <!-- 7-Day Weekly Forecast Card -->
+        <article class="weekly-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <span>📅</span> 7-Day Weekly Forecast
+            </h3>
+          </div>
+          <div id="weekly-forecast-list" class="weekly-list">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </article>
+
+        <!-- Bento Grid of Detailed Weather Cards -->
+        <div class="bento-section">
+          
+          <!-- Humidity Card -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>💧</span> Humidity</span>
+              <div class="bento-icon-badge">🌊</div>
+            </div>
+            <div>
+              <div id="bento-humidity-val" class="bento-main-val">58%</div>
+              <div id="bento-humidity-sub" class="bento-subtext">Pleasant & comfortable</div>
+            </div>
+          </div>
+
+          <!-- Wind Card with Pinwheel Graphic -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>💨</span> Wind Speed</span>
+              <div class="bento-icon-badge">🍃</div>
+            </div>
+            <div class="wind-visual-box">
+              <div class="pinwheel-svg-wrap">
+                <svg viewBox="0 0 60 60" width="100%" height="100%">
+                  <line x1="30" y1="30" x2="30" y2="58" stroke="#78909c" stroke-width="3" stroke-linecap="round"/>
+                  <g id="pinwheel-blade" style="transform-origin: 30px 30px;">
+                    <path d="M30,30 C30,15 15,15 15,30 Z" fill="#38bdf8"/>
+                    <path d="M30,30 C45,30 45,15 30,15 Z" fill="#fbbf24"/>
+                    <path d="M30,30 C30,45 45,45 45,30 Z" fill="#f87171"/>
+                    <path d="M30,30 C15,30 15,45 30,45 Z" fill="#4ade80"/>
+                    <circle cx="30" cy="30" r="3.5" fill="#ffffff" stroke="#37474f" stroke-width="1.5"/>
+                  </g>
+                </svg>
+              </div>
+              <div>
+                <div id="bento-wind-val" class="bento-main-val">12 km/h</div>
+                <div id="bento-wind-sub" class="bento-subtext">Heading from NW</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- UV Index Card -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>☀️</span> UV Index</span>
+              <span id="bento-uv-badge" style="font-weight:700; font-size:13px; color:#eab308;">Moderate</span>
+            </div>
+            <div>
+              <div id="bento-uv-val" class="bento-main-val">4</div>
+              <div class="uv-gauge-wrap">
+                <div id="uv-gauge-thumb" class="uv-gauge-thumb" style="left: 36%;"></div>
+              </div>
+              <div class="bento-subtext">Sunglasses recommended</div>
+            </div>
+          </div>
+
+          <!-- Sunrise & Sunset with Curved Day Path Arc -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>🌅</span> Sun Schedule</span>
+              <div class="bento-icon-badge">☀️</div>
+            </div>
+            <div>
+              <div class="sunrise-arch-wrap">
+                <svg viewBox="0 0 240 70">
+                  <path d="M 20,60 Q 120,5 220,60" fill="none" stroke="rgba(255,183,77,0.3)" stroke-width="4" stroke-dasharray="4 4"/>
+                  <circle id="sun-path-dot" class="sun-path-dot" cx="120" cy="20" r="7" fill="#ffb300" stroke="#fff" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="sun-times-row">
+                <span>Sunrise: <strong id="time-sunrise">06:12</strong></span>
+                <span>Sunset: <strong id="time-sunset">18:24</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precipitation Volume -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>🌧️</span> Precipitation</span>
+              <div class="bento-icon-badge">☔</div>
+            </div>
+            <div>
+              <div id="bento-precip-val" class="bento-main-val">0.0 mm</div>
+              <div class="bento-subtext">Expected in current period</div>
+            </div>
+          </div>
+
+          <!-- Air Pressure -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <span class="bento-title"><span>🧭</span> Air Pressure</span>
+              <div class="bento-icon-badge">🎈</div>
+            </div>
+            <div>
+              <div id="bento-pressure-val" class="bento-main-val">1018 hPa</div>
+              <div class="bento-subtext">Normal atmospheric level</div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <p>✨ <strong>SkyCheck</strong> — Live weather checker with vivid cartoon pictures in background matching real-time weather conditions.</p>
+      <p>Data provided in real-time by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer" class="footer-link">Open-Meteo API</a> • Global coverage with zero latency.</p>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification Popup -->
+  <div id="toast-notification" class="toast-msg" role="status" aria-live="polite"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/weather-effects.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
